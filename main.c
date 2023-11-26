@@ -3,13 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct {
-    double sepal_length;
-    double sepal_width;
-    double petal_length;
-    double petal_width;
-    char* species;
-} Record;
+#include "iris_records.h"
 
 Record* read_records(const char* filename, int* num_records) {
     FILE* f = fopen(filename, "r");
