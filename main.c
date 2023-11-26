@@ -46,15 +46,20 @@ void print_records(Record* records, int num_records) {
     }
 }
 
+void free_records(Record* records, int num_records) {
+    for (int i = 0; i < num_records; i++) {
+        free(records[i].species);
+    }
+    free(records);
+}
+
 int main() {
     int num_records = 0;
     Record* records = read_records("iris.csv", &num_records);
 
     print_records(records, num_records);
 
-    for (int i = 0; i < num_records; i++) {
-        free(records[i].species);
-    }
-    free(records);
+    free_records(records, num_records);
+
     return 0;
 }
