@@ -40,13 +40,17 @@ Record* read_records(const char* filename, int* num_records) {
     return records;
 }
 
+void print_records(Record* records, int num_records) {
+    for (int i = 0; i < num_records; i++) {
+        printf("%lf %lf %lf %lf %s\n", records[i].sepal_length, records[i].sepal_width, records[i].petal_length, records[i].petal_width, records[i].species);
+    }
+}
+
 int main() {
     int num_records = 0;
     Record* records = read_records("iris.csv", &num_records);
 
-    for (int i = 0; i < num_records; i++) {
-        printf("%lf %lf %lf %lf %s\n", records[i].sepal_length, records[i].sepal_width, records[i].petal_length, records[i].petal_width, records[i].species);
-    }
+    print_records(records, num_records);
 
     for (int i = 0; i < num_records; i++) {
         free(records[i].species);
