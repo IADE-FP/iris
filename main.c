@@ -64,22 +64,26 @@ double mean_species_sepal_length(Record* records, int num_records, const char* s
     return sum / count;
 }
 
+void write_mean_species_sepal_length(Record* records, int num_records, const char** species, const int num_species, const char* out_filename) {
+    FILE* f = fopen(out_filename, "w");
+    fprintf(f, "species,mean_sepal_length\n");
+    for (int i = 0; i < num_species; i++) {
+        double mean = mean_species_sepal_length(records, num_records, species[i]);
+        printf("%s mean sepal length: %1.3lf\n", species[i], mean);
+        fprintf(f, "%s,%1.3lf\n", species[i], mean);
+    }
+    fclose(f);
+}
+
 int main() {
     int num_records = 0;
     Record* records = read_records("iris.csv", &num_records);
 
     // print_records(records, num_records);
 
-    char* species[] = {"setosa", "versicolor", "virginica"};
+    const char* species[] = {"setosa", "versicolor", "virginica"};
     char* out_filename = "iris_means.csv";
-    FILE* f = fopen(out_filename, "w");
-    fprintf(f, "species,mean_sepal_length\n");
-    for (int i = 0; i < 3; i++) {
-        double mean = mean_species_sepal_length(records, num_records, species[i]);
-        printf("%s mean sepal length: %1.3lf\n", species[i], mean);
-        fprintf(f, "%s,%1.3lf\n", species[i], mean);
-    }
-    fclose(f);
+    write_mean_species_sepal_length(records, num_records, species, 3, out_filename);
     
     free_records(records, num_records);
 
