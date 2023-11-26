@@ -71,10 +71,15 @@ int main() {
     // print_records(records, num_records);
 
     char* species[] = {"setosa", "versicolor", "virginica"};
+    char* out_filename = "iris_means.csv";
+    FILE* f = fopen(out_filename, "w");
+    fprintf(f, "species,mean_sepal_length\n");
     for (int i = 0; i < 3; i++) {
         double mean = mean_species_sepal_length(records, num_records, species[i]);
-        printf("%s mean sepal length: %lf\n", species[i], mean);
+        printf("%s mean sepal length: %1.3lf\n", species[i], mean);
+        fprintf(f, "%s,%1.3lf\n", species[i], mean);
     }
+    fclose(f);
     
     free_records(records, num_records);
 
