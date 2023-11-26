@@ -21,7 +21,6 @@ Record* read_records(const char* filename, int* num_records) {
     Record* records = NULL;
     *num_records = 0;
     while (getline(&line, &len, f) != -1) {
-        printf("%s", line);
         line[strlen(line) - 1] = '\0';
         records = realloc(records, (*num_records + 1) * sizeof(Record));
         records[*num_records].sepal_length = atof(strtok(line, ","));
@@ -53,12 +52,30 @@ void free_records(Record* records, int num_records) {
     free(records);
 }
 
+double mean_species_sepal_length(Record* records, int num_records, const char* species) {
+    double sum = 0;
+    int count = 0;
+    for (int i = 0; i < num_records; i++) {
+        if (strcmp(records[i].species, species) == 0) {
+            sum += records[i].sepal_length;
+            count++;
+        }
+    }
+    return sum / count;
+}
+
 int main() {
     int num_records = 0;
     Record* records = read_records("iris.csv", &num_records);
 
-    print_records(records, num_records);
+    // print_records(records, num_records);
 
+    char* species[] = {"setosa", "versicolor", "virginica"};
+    for (int i = 0; i < 3; i++) {
+        double mean = mean_species_sepal_length(records, num_records, species[i]);
+        printf("%s mean sepal length: %lf\n", species[i], mean);
+    }
+    
     free_records(records, num_records);
 
     return 0;
